@@ -59,8 +59,7 @@ public class RestAppController {
         }
 
         Optional<Countries> optionalCountries =
-                countriesService.getByCountryName(countryName)
-                        .filter(s -> s.getFullName().equalsIgnoreCase(countryName));
+                countriesService.getByCountryName(countryName);
 
         String telephone_code = optionalCountries
                 .stream()
