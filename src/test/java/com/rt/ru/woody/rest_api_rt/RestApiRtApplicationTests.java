@@ -9,5 +9,4 @@ class RestApiRtApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

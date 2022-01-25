@@ -3,14 +3,14 @@ package com.rt.ru.woody.rest_api_rt.exception_handling;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class NoCountryFoundException extends RuntimeException{
+@ResponseStatus(HttpStatus.FORBIDDEN)
+public class NoAuthFoundException extends RuntimeException{
 
-    public NoCountryFoundException(String message) {
+    public NoAuthFoundException(String message) {
         super(message);
     }
 
-    public NoCountryFoundException(String message, Throwable cause) {
+    public NoAuthFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 }

@@ -1,38 +1,39 @@
 package com.rt.ru.woody.rest_api_rt.request;
 
-import com.rt.ru.woody.rest_api_rt.utils.FileSaver;
+
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 @Component
+@Slf4j
 public class CountryRequest {
 
     private final String countries = "http://country.io/names.json";
 
     private final String phones = "http://country.io/phone.json";
 
-    @Autowired
-    private FileSaver fileSaver;
+    public String getCountriesContent() throws IOException {
 
-    public String generate() throws IOException {
-
-        StringBuilder builder = new StringBuilder();
-
+        log.info("Getting json with countries in it");
         Content countriesContent = Request.Get(countries)
                 .execute()
                 .returnContent();
 
+        return countriesContent.asString();
+    }
+
+    public String getCodeContent() throws IOException {
+
+        log.info("Getting json with countries phone codes in it");
         Content phoneContent = Request.Get(phones)
                 .execute()
                 .returnContent();
 
-        builder.append(countriesContent);
+        return phoneContent.asString();
 
-        return builder.toString();
     }
 }

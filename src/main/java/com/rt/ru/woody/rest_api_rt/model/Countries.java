@@ -21,5 +21,13 @@ public class Countries{
 
     @Column(name = "FULL_NAME")
     private String fullName;
-    
+
+    @Column(name = "PHONE_CODES")
+    private String phoneCodes;
+
+
+    public Countries(String shortName, String fullName) {
+        this.shortName = shortName;
+        this.fullName = fullName;
+    }
 }
