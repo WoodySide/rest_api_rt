@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface CountryRepository extends JpaRepository<Countries, Long> {
 
      Optional<Countries> getByFullNameContainingIgnoreCase(String fullName);
+
+     Optional<Countries> deleteByFullName(String fullName);
 }

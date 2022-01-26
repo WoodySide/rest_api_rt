@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -52,14 +53,15 @@ public class RestAppController {
     @GetMapping(path = "/code/{countryName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getCountryCode(@PathVariable(value = "countryName") String countryName,
                                                  @RequestHeader(value="Authorization",required = true)
-                                                              String header){
+                                                         String header) throws IOException {
+
+
+        Optional<Countries> optionalCountries =
+                countriesService.getByCountryName(countryName);
 
         if(!header.equals(SECURED_NUMBER_CODE)) {
             throw new NoAuthFoundException("The entrance is forbidden. No rights to see the data.");
         }
-
-        Optional<Countries> optionalCountries =
-                countriesService.getByCountryName(countryName);
 
         String telephone_code = optionalCountries
                 .stream()
@@ -70,8 +72,15 @@ public class RestAppController {
             throw  new NoCountryFoundException("There is not such country.Please try again, " +
                     "and pay more attention next time.");
         }
-
         return ResponseEntity.ok()
                 .body("Telephone code of the country is: " + telephone_code);
     }
+
+    @GetMapping(path = "/remove")
+    public String deleteData() {
+        countriesService.removeDataFromDB();
+
+        return "All data has been deleted";
+    }
+
 }

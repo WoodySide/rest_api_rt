@@ -16,6 +16,15 @@ public class SpringPointcuts {
 
         }
 
+        @Pointcut(value = "" +
+                "within(@org.springframework.web.bind.annotation.RestController *)")
+        public void springRestBeanPointcut() {}
+
+        @Pointcut(value = "within(com.rt.ru.woody.rest_api_rt.controller.RestAppController.reloadData*)")
+        public void reloadTest() {
+
+        }
+
         @Pointcut("within(com.rt.ru.woody.rest_api_rt.service..*)")
         public void serviceBeanPointcut() {
         }

@@ -36,12 +36,10 @@ public class CountryResponse {
 
         Map<String,String> map = new HashMap<>();
 
-        StringBuilder builder = new StringBuilder();
         for(CountriesShort shorties: CountriesShort.values()) {
             JsonPrimitive bd = jsonObject.getAsJsonPrimitive(shorties.toString());
 
             map.put(shorties.name(), bd.getAsString());
-            builder.append(shorties.name()).append(bd);
         }
         return map;
     }
@@ -56,14 +54,13 @@ public class CountryResponse {
 
         Map<String,String> map = new HashMap<>();
 
-        StringBuilder builder = new StringBuilder();
         for(CountriesShort shorties: CountriesShort.values()) {
             JsonPrimitive bd = jsonObject.getAsJsonPrimitive(shorties.toString());
 
             map.put(shorties.name(), bd.getAsString());
-            builder.append(shorties.name()).append(bd);
         }
 
         return map;
     }
+
 }
