@@ -32,20 +32,19 @@ public class CountriesService {
     @Scheduled(cron = "0 0 2 * * ?", zone = "Europe/Moscow")
     @Transactional
     public void saveDataToDB() throws IOException {
+
         Map<String,String> countriesMap = countryResponse.countriesContent();
 
         Map<String,String> codeMap = countryResponse.codeContent();
 
         List<Countries> countries = new ArrayList<>();
 
-        for(Map.Entry<String,String> entry1: countriesMap.entrySet()) {
-            for(Map.Entry<String,String> entry2: codeMap.entrySet()) {
-                if(entry1.getKey().equals(entry2.getKey())) {
-                    countries.add(new Countries(entry1.getKey(), entry1.getValue(),
-                            entry2.getValue()));
-                }
+        countriesMap.forEach((key, value) -> codeMap.forEach((key1, value1) -> {
+            if (key.equals(key1)) {
+                countries.add(new Countries(key, value,
+                        value1));
             }
-        }
+        }));
 
         List<Countries> finalCountriesNames = countries.stream()
                         .sorted(Comparator.comparing(Countries::getShortName))
