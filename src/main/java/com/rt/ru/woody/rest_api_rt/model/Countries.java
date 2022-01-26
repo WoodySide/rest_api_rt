@@ -11,7 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-@Entity(name = "CountryData")
+@Entity(name = "Countries")
 @Table(name = "country_data")
 public class Countries{
 
