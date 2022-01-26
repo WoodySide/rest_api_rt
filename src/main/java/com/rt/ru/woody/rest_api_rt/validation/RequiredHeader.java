@@ -9,7 +9,5 @@ import java.lang.annotation.*;
 @Documented
 public @interface RequiredHeader {
 
-    String param() default "none";
-
-    String value();
+    String param()  default "none";
 }

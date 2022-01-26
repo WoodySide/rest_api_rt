@@ -4,17 +4,24 @@ package com.rt.ru.woody.rest_api_rt.request;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 
 @Component
 @Slf4j
+@PropertySource("classpath:values.properties")
 public class CountryRequest {
 
-    private final String countries = "http://country.io/names.json";
+    @Value(value = "${url_countries}")
+    private String countries;
 
-    private final String phones = "http://country.io/phone.json";
+    @Value(value = "${url_phones}")
+    private String phones;
 
     public String getCountriesContent() throws IOException {
 

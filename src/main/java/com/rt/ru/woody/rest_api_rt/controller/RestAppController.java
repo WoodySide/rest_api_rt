@@ -53,8 +53,7 @@ public class RestAppController {
     @GetMapping(path = "/code/{countryName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getCountryCode(@PathVariable(value = "countryName") String countryName,
                                                  @RequestHeader(value="Authorization",required = true)
-                                                         String header) throws IOException {
-
+                                                         String header) {
 
         Optional<Countries> optionalCountries =
                 countriesService.getByCountryName(countryName);
