@@ -50,6 +50,12 @@
             <version>2.8.5</version>
         </dependency>
 
+        <!--Cache-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
         <!--H2-->
         <dependency>
             <groupId>com.h2database</groupId>
