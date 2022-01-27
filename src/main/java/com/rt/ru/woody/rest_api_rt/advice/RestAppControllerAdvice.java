@@ -2,6 +2,7 @@ package com.rt.ru.woody.rest_api_rt.advice;
 
 import com.rt.ru.woody.rest_api_rt.exception_handling.NoAuthFoundException;
 import com.rt.ru.woody.rest_api_rt.exception_handling.NoCountryFoundException;
+import com.rt.ru.woody.rest_api_rt.exception_handling.NotAProperLinkException;
 import com.rt.ru.woody.rest_api_rt.payload.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,13 @@ public class RestAppControllerAdvice {
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     @ResponseBody
     public ApiResponse handleForbiddenRequestException(NoAuthFoundException ex, WebRequest request) {
+        return new ApiResponse(false, ex.getMessage(), ex.getClass().getName(), resolvePathFromWebRequest(request));
+    }
+
+    @ExceptionHandler(value = NotAProperLinkException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ApiResponse handleNotFoundLinkRequestException(NotAProperLinkException ex, WebRequest request) {
         return new ApiResponse(false, ex.getMessage(), ex.getClass().getName(), resolvePathFromWebRequest(request));
     }
 }
