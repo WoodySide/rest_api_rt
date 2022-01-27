@@ -30,9 +30,7 @@ public class CountryResponse {
 
         String jsonString = request.getCountriesContent();
 
-        JsonElement element = new JsonParser().parse(jsonString);
-
-        JsonObject jsonObject = element.getAsJsonObject();
+        JsonObject jsonObject = getResponse(jsonString);
 
         Map<String,String> map = new HashMap<>();
 
@@ -48,9 +46,7 @@ public class CountryResponse {
 
         String jsonString = request.getCodeContent();
 
-        JsonElement element = new JsonParser().parse(jsonString);
-
-        JsonObject jsonObject = element.getAsJsonObject();
+        JsonObject jsonObject = getResponse(jsonString);
 
         Map<String,String> map = new HashMap<>();
 
@@ -61,6 +57,11 @@ public class CountryResponse {
         }
 
         return map;
+    }
+
+    private JsonObject getResponse(String request) {
+        JsonElement element = new JsonParser().parse(request);
+        return element.getAsJsonObject();
     }
 
 }
