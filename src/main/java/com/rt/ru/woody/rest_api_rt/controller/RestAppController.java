@@ -12,7 +12,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -27,6 +32,9 @@ public class RestAppController {
     @Autowired
     private CountriesService countriesService;
 
+    @Autowired
+    private HttpServletRequest request;
+
     @Value("${secret_code}")
     private  String SECURED_NUMBER_CODE;
 
@@ -34,10 +42,14 @@ public class RestAppController {
     private  String SECURED_NUMBER_RELOAD;
 
     @PostMapping(path = "/reload", produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> reloadData(@RequestHeader(value="Authorization",required = true)
-                                                          String header) throws IOException, NoSuchFieldException, IllegalAccessException {
+    public ResponseEntity<String> reloadData() throws IOException, NoSuchFieldException, IllegalAccessException {
 
-        countriesService.checkHeader(SECURED_NUMBER_RELOAD, header);
+
+        Map<String,String> header = getHeadersInfo();
+
+        header.put("Authorization", SECURED_NUMBER_RELOAD);
+
+        countriesService.checkHeader(SECURED_NUMBER_RELOAD,header.get("authorization"));
 
         countriesService.saveDataToDB();
 
@@ -48,11 +60,14 @@ public class RestAppController {
 
     //TODO: BAD REQUEST EXCEPTION
     @GetMapping(path = "/code/{countryName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getCountryCode(@PathVariable(value = "countryName") String countryName,
-                                                 @RequestHeader(value="Authorization",required = true)
-                                                         String header) {
+    public ResponseEntity<String> getCountryCode(@PathVariable(value = "countryName") String countryName) {
 
-        countriesService.checkHeader(SECURED_NUMBER_CODE,header);
+
+        Map<String,String> header = getHeadersInfo();
+
+        header.put("Authorization", SECURED_NUMBER_CODE);
+
+        countriesService.checkHeader(SECURED_NUMBER_CODE,header.get("authorization"));
 
         Optional<Countries> optionalCountries =
                 countriesService.getByCountryName(countryName);
@@ -74,5 +89,21 @@ public class RestAppController {
         countriesService.removeDataFromDB();
 
         return "All data has been deleted";
+    }
+
+    private Map<String, String> getHeadersInfo() {
+
+        Map<String, String> map = new HashMap<String, String>();
+
+
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String key = headerNames.nextElement();
+            String value = request.getHeader(key);
+            map.put(key, value);
+
+        }
+
+        return map;
     }
 }
