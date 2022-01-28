@@ -58,7 +58,6 @@ public class RestAppController {
                 .body("Data was successfully reloaded! \n You can check it right here --> http://localhost:9090/h2-console/login.jsp?jsessionid=aef4b5e43e06e8be91b91603ce4930aa");
     }
 
-    //TODO: BAD REQUEST EXCEPTION
     @GetMapping(path = "/code/{countryName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getCountryCode(@PathVariable(value = "countryName") String countryName) {
 
