@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.*;
@@ -39,6 +40,11 @@ public class RestAppController {
     @Value("${secret_reload}")
     private  String SECURED_NUMBER_RELOAD;
 
+    @PostConstruct
+    public void setUpDB() throws IOException {
+        countriesService.saveDataToDB();
+    }
+
     @PostMapping(path = "/reload", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> reloadData() throws IOException {
 
@@ -56,8 +62,6 @@ public class RestAppController {
 
     @GetMapping(path = "/code/{countryName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getCountryCode(@PathVariable(value = "countryName") String countryName) throws IOException {
-
-        countriesService.saveDataToDB();
 
         Map<String,String> header = getHeadersInfo();
 
