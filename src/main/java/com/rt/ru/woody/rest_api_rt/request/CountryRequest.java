@@ -28,6 +28,8 @@ public class CountryRequest {
 
         Content countriesContent = null;
 
+
+
         try {
             log.info("Getting json with countries in it");
             countriesContent = Request.Get(countries)
