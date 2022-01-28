@@ -42,7 +42,7 @@ public class RestAppController {
     private  String SECURED_NUMBER_RELOAD;
 
     @PostMapping(path = "/reload", produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> reloadData() throws IOException, NoSuchFieldException, IllegalAccessException {
+    public ResponseEntity<String> reloadData() throws IOException {
 
 
         Map<String,String> header = getHeadersInfo();
@@ -92,8 +92,7 @@ public class RestAppController {
 
     private Map<String, String> getHeadersInfo() {
 
-        Map<String, String> map = new HashMap<String, String>();
-
+        Map<String, String> map = new HashMap<>();
 
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {

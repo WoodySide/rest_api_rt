@@ -25,7 +25,6 @@ public class Countries{
     @Column(name = "PHONE_CODES")
     private String phoneCodes;
 
-
     public Countries(String shortName, String fullName) {
         this.shortName = shortName;
         this.fullName = fullName;
