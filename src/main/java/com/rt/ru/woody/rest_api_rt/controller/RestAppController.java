@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -60,7 +57,6 @@ public class RestAppController {
 
     @GetMapping(path = "/code/{countryName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getCountryCode(@PathVariable(value = "countryName") String countryName) {
-
 
         Map<String,String> header = getHeadersInfo();
 
