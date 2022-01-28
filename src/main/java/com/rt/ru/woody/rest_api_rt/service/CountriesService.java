@@ -1,7 +1,6 @@
 package com.rt.ru.woody.rest_api_rt.service;
 
 import com.rt.ru.woody.rest_api_rt.exception_handling.NoAuthFoundException;
-import com.rt.ru.woody.rest_api_rt.exception_handling.NoCountryFoundException;
 import com.rt.ru.woody.rest_api_rt.model.Countries;
 import com.rt.ru.woody.rest_api_rt.repository.CountryRepository;
 import com.rt.ru.woody.rest_api_rt.response.CountryResponse;
@@ -57,7 +56,13 @@ public class CountriesService implements ValidationAuthInterface {
 
     @Cacheable(value = "country_data", key = "#countryName")
     public Optional<Countries> getByCountryName(String countryName) {
+        getAllDataFromCache();
         return countryRepository.getByFullNameContainingIgnoreCase(countryName);
+    }
+
+    @Cacheable(value = "country_data")
+    public List<Countries> getAllDataFromCache() {
+        return countryRepository.findAll();
     }
 
     public void removeDataFromDB() {
@@ -71,11 +76,4 @@ public class CountriesService implements ValidationAuthInterface {
         }
     }
 
-    @Override
-    public void notEmptyCode(String telephone_code) {
-        if (telephone_code.isEmpty()) {
-            throw new NoCountryFoundException("There is not such country.Please try again, " +
-                    "and pay more attention next time.");
-        }
-    }
 }

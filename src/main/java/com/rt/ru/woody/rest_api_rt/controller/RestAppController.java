@@ -2,6 +2,7 @@ package com.rt.ru.woody.rest_api_rt.controller;
 
 import com.rt.ru.woody.rest_api_rt.model.Countries;
 import com.rt.ru.woody.rest_api_rt.service.CountriesService;
+import com.rt.ru.woody.rest_api_rt.validation.ValidationAuthInterface;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,8 +47,6 @@ public class RestAppController {
 
         header.put("Authorization", SECURED_NUMBER_RELOAD);
 
-        countriesService.checkHeader(SECURED_NUMBER_RELOAD,header.get("authorization"));
-
         countriesService.saveDataToDB();
 
         return ResponseEntity
@@ -56,7 +55,9 @@ public class RestAppController {
     }
 
     @GetMapping(path = "/code/{countryName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getCountryCode(@PathVariable(value = "countryName") String countryName) {
+    public ResponseEntity<String> getCountryCode(@PathVariable(value = "countryName") String countryName) throws IOException {
+
+        countriesService.saveDataToDB();
 
         Map<String,String> header = getHeadersInfo();
 
@@ -67,13 +68,11 @@ public class RestAppController {
         Optional<Countries> optionalCountries =
                 countriesService.getByCountryName(countryName);
 
-
         String telephone_code = optionalCountries
                 .stream()
                 .map(Countries::getPhoneCodes)
                 .collect(Collectors.joining());
 
-       countriesService.notEmptyCode(telephone_code);
         return ResponseEntity.ok()
                 .body("Telephone code of the country is: " + telephone_code);
     }
@@ -84,6 +83,17 @@ public class RestAppController {
         countriesService.removeDataFromDB();
 
         return "All data has been deleted";
+    }
+
+    /*
+    Test cache get all
+     */
+    @GetMapping(path = "/get")
+    public String getAllFromCache() {
+
+        List<Countries> data = countriesService.getAllDataFromCache();
+
+        return data.toString();
     }
 
     private Map<String, String> getHeadersInfo() {
