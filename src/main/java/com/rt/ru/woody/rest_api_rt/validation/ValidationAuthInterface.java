@@ -4,5 +4,5 @@ public interface ValidationAuthInterface {
 
     void checkHeader(String checkHeader, String header);
 
-
+    void checkCountryName(String countryName);
 }
