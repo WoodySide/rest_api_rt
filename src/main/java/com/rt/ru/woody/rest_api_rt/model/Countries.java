@@ -1,5 +1,6 @@
 package com.rt.ru.woody.rest_api_rt.model;
 
+import com.rt.ru.woody.rest_api_rt.exception_handling.NoCountryFoundException;
 import lombok.*;
 
 import javax.persistence.*;

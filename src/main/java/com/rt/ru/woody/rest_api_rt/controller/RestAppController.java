@@ -1,6 +1,7 @@
 package com.rt.ru.woody.rest_api_rt.controller;
 
 import com.rt.ru.woody.rest_api_rt.model.Countries;
+import com.rt.ru.woody.rest_api_rt.service.CachedServiceCountries;
 import com.rt.ru.woody.rest_api_rt.service.CountriesService;
 import com.rt.ru.woody.rest_api_rt.validation.ValidationAuthInterface;
 import lombok.AllArgsConstructor;
@@ -24,21 +25,26 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/api/v1")
 @PropertySource("classpath:values.properties")
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 public class RestAppController {
 
-    @Autowired
-    private CountriesService countriesService;
+    private final CountriesService countriesService;
 
-    @Autowired
-    private HttpServletRequest request;
+    private final HttpServletRequest request;
+
+    private final CachedServiceCountries cachedCountries;
 
     @Value("${secret_code}")
-    private  String SECURED_NUMBER_CODE;
+    private String SECURED_NUMBER_CODE;
 
     @Value("${secret_reload}")
-    private  String SECURED_NUMBER_RELOAD;
+    private String SECURED_NUMBER_RELOAD;
+
+    @Autowired
+    public RestAppController(CountriesService countriesService, HttpServletRequest request, CachedServiceCountries cachedCountries) {
+        this.countriesService = countriesService;
+        this.request = request;
+        this.cachedCountries = cachedCountries;
+    }
 
     @PostConstruct
     public void setUpDB() throws IOException {
@@ -69,13 +75,15 @@ public class RestAppController {
 
         countriesService.checkHeader(SECURED_NUMBER_CODE,header.get("authorization"));
 
-        Optional<Countries> optionalCountries =
-                countriesService.getByCountryName(countryName);
+        List<Countries> optionalCountries =
+                cachedCountries.getByCountryName(countryName);
 
         String telephone_code = optionalCountries
                 .stream()
                 .map(Countries::getPhoneCodes)
                 .collect(Collectors.joining());
+
+        countriesService.checkCountryName(telephone_code);
 
         return ResponseEntity.ok()
                 .body("Telephone code of the country is: " + telephone_code);
@@ -95,7 +103,7 @@ public class RestAppController {
     @GetMapping(path = "/get")
     public String getAllFromCache() {
 
-        List<Countries> data = countriesService.getAllDataFromCache();
+        List<Countries> data = cachedCountries.getAllDataFromCache();
 
         return data.toString();
     }

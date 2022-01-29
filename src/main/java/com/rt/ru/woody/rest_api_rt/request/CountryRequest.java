@@ -3,7 +3,6 @@ package com.rt.ru.woody.rest_api_rt.request;
 
 import com.rt.ru.woody.rest_api_rt.exception_handling.NotAProperLinkException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpResponseFactory;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,8 +27,6 @@ public class CountryRequest {
 
         Content countriesContent = null;
 
-
-
         try {
             log.info("Getting json with countries in it");
             countriesContent = Request.Get(countries)
@@ -43,7 +40,7 @@ public class CountryRequest {
         return countriesContent.asString();
     }
 
-    public String getCodeContent() throws IOException {
+    public String getCodeContent()  {
 
         Content phoneContent = null;
 

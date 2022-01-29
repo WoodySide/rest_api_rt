@@ -1,13 +1,13 @@
 package com.rt.ru.woody.rest_api_rt.service;
 
 import com.rt.ru.woody.rest_api_rt.exception_handling.NoAuthFoundException;
+import com.rt.ru.woody.rest_api_rt.exception_handling.NoCountryFoundException;
 import com.rt.ru.woody.rest_api_rt.model.Countries;
 import com.rt.ru.woody.rest_api_rt.repository.CountryRepository;
 import com.rt.ru.woody.rest_api_rt.response.CountryResponse;
 import com.rt.ru.woody.rest_api_rt.validation.ValidationAuthInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -54,17 +54,6 @@ public class CountriesService implements ValidationAuthInterface {
         countryRepository.saveAll(finalCountriesNames);
     }
 
-    @Cacheable(value = "country_data", key = "#countryName")
-    public Optional<Countries> getByCountryName(String countryName) {
-        getAllDataFromCache();
-        return countryRepository.getByFullNameContainingIgnoreCase(countryName);
-    }
-
-    @Cacheable(value = "country_data")
-    public List<Countries> getAllDataFromCache() {
-        return countryRepository.findAll();
-    }
-
     public void removeDataFromDB() {
         countryRepository.deleteAll();
     }
@@ -76,4 +65,9 @@ public class CountriesService implements ValidationAuthInterface {
         }
     }
 
+    public void checkCountryName(String countryName) {
+        if(countryName.isEmpty() || countryName.isBlank()) {
+            throw new NoCountryFoundException("There is no such country or this country has no code");
+        }
+    }
 }

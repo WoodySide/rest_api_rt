@@ -40,6 +40,7 @@ public class CountryResponse {
 
             map.put(shorties, bd.getAsString());
         }
+        System.out.println(map);
         return map;
     }
 
