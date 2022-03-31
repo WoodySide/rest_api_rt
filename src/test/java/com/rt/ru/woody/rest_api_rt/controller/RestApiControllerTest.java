@@ -1,6 +1,7 @@
 package com.rt.ru.woody.rest_api_rt.controller;
 
 
+import com.rt.ru.woody.rest_api_rt.model.AppConst;
 import com.rt.ru.woody.rest_api_rt.service.CountriesService;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +39,12 @@ public class RestApiControllerTest {
         countriesService.saveDataToDB();
     }
 
-    private void getCodeByCountryName(String countryName) throws Exception {
+    private void getCodeByCountryName() throws Exception {
+        String countryName = "Austria";
         mockMvc
                 .perform(
                         get(CODE_URL + "/" + countryName)
-                                .header(HttpHeaders.AUTHORIZATION, "Bearer 555")
+                        .header(HttpHeaders.AUTHORIZATION, AppConst.SECURED_NUMBER_CODE)
                 )
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -74,7 +76,7 @@ public class RestApiControllerTest {
         mockMvc
                 .perform(
                         get(CODE_URL + "/" + countryName)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer 555"))
+                .header(HttpHeaders.AUTHORIZATION, AppConst.SECURED_NUMBER_CODE))
                 .andExpect(status().isNotFound())
                 .andDo(print());
     }
@@ -83,7 +85,7 @@ public class RestApiControllerTest {
         mockMvc
                 .perform(
                         post(RELOAD_URL)
-                                .header(HttpHeaders.AUTHORIZATION, "Bearer 444"))
+                                .header(HttpHeaders.AUTHORIZATION, AppConst.SECURED_NUMBER_RELOAD))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -103,12 +105,11 @@ public class RestApiControllerTest {
                         post(RELOAD_URL))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
-
     }
 
     @Test
     public void whenGetCountryName_thenReturnItsCode() throws Exception {
-        getCodeByCountryName("Austria");
+        getCodeByCountryName();
     }
 
     @Test

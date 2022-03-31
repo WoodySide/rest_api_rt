@@ -1,6 +1,5 @@
 package com.rt.ru.woody.rest_api_rt.model;
 
-import com.rt.ru.woody.rest_api_rt.exception_handling.NoCountryFoundException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,7 +12,8 @@ import javax.persistence.*;
 @EqualsAndHashCode
 @ToString
 @Entity(name = "Countries")
-@Table(name = "country_data")
+@Table(name = "country_data",
+       indexes = @Index(name = "full_name_index", columnList = "FULL_NAME_TO_LOWER", unique = true))
 public class Countries{
 
     @Id
@@ -23,8 +23,11 @@ public class Countries{
     @Column(name = "FULL_NAME")
     private String fullName;
 
-    @Column(name = "PHONE_CODES")
-    private String phoneCodes;
+    @Column(name = "FULL_NAME_TO_LOWER")
+    private String fullNameToLower;
+
+    @Column(name = "PHONE_CODE")
+    private String phoneCode;
 
     public Countries(String shortName, String fullName) {
         this.shortName = shortName;

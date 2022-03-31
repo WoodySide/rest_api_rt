@@ -16,6 +16,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -28,15 +29,9 @@ public class CachedServiceCountries {
         this.countryRepository = countryRepository;
     }
 
-    @Cacheable(value = "country_data", key = "#countryName")
-    public List<Countries> getByCountryName(String countryName) {
-        getAllDataFromCache();
-        return countryRepository.getTopByFullNameContainingIgnoreCase(countryName);
-    }
-
-    @Cacheable(value = "country_data")
-    public List<Countries> getAllDataFromCache() {
-        return countryRepository.findAll();
+    @Cacheable(value = "country_data", key = "{#countryName, #countryNameToLower}")
+    public Optional<Countries> getByCountryName(String countryName, String countryNameToLower) {
+        return countryRepository.getTopByFullNameOrFullNameToLower(countryName,countryNameToLower);
     }
 
     @CacheEvict(allEntries = true, value="country_data")

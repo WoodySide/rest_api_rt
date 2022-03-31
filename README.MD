@@ -1,6 +1,5 @@
 
-#Rest Service Test 
-
+#Rest Service Test
 
  - Реализовать REST сервис POST /reload, который по требованию обновит данные в БД о странах и телефонных кодах.
 
@@ -27,6 +26,3 @@
 
  
  - Написать Dockerfile сборки и деплоя приложения
-
- 
- - Исходники разместить в git http://gitlab.south.rt.ru/test/service-test.git

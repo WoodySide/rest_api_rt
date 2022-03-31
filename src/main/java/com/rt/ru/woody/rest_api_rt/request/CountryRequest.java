@@ -14,22 +14,15 @@ import java.io.IOException;
 
 @Component
 @Slf4j
-@PropertySource("classpath:values.properties")
 public class CountryRequest {
 
-    @Value(value = "${url_countries}")
-    private String countries;
+    public String getRequest(String url) throws IOException {
 
-    @Value(value = "${url_phones}")
-    private String phones;
-
-    public String getCountriesContent() throws IOException {
-
-        Content countriesContent = null;
+        Content countriesContent;
 
         try {
             log.info("Getting json with countries in it");
-            countriesContent = Request.Get(countries)
+            countriesContent = Request.Get(url)
                     .execute()
                     .returnContent();
 
@@ -38,23 +31,5 @@ public class CountryRequest {
         }
 
         return countriesContent.asString();
-    }
-
-    public String getCodeContent()  {
-
-        Content phoneContent = null;
-
-        try {
-        log.info("Getting json with countries phone codes in it");
-        phoneContent = Request.Get(phones)
-                .execute()
-                .returnContent();
-
-        } catch (IOException e) {
-            throw new NotAProperLinkException("Link doesn't seem correct!");
-        }
-
-        return phoneContent.asString();
-
     }
 }

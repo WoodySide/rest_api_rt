@@ -26,31 +26,13 @@ public class CountryResponse {
 
     }
 
-    public Map<String,String>  countriesContent() throws IOException {
+    public Map<String,String> countriesContent(String url) throws IOException {
 
-        String jsonString = request.getCountriesContent();
+        String jsonString = request.getRequest(url);
 
         JsonObject jsonObject = getResponse(jsonString);
         Set<String> strings = jsonObject.keySet();
 
-        Map<String,String> map = new HashMap<>();
-
-        for(String shorties: strings) {
-            JsonPrimitive bd = jsonObject.getAsJsonPrimitive(shorties);
-
-            map.put(shorties, bd.getAsString());
-        }
-        System.out.println(map);
-        return map;
-    }
-
-    public Map<String,String> codeContent() throws IOException {
-
-        String jsonString = request.getCodeContent();
-
-        JsonObject jsonObject = getResponse(jsonString);
-
-        Set<String> strings = jsonObject.keySet();
         Map<String,String> map = new HashMap<>();
 
         for(String shorties: strings) {
@@ -66,5 +48,4 @@ public class CountryResponse {
         JsonElement element = new JsonParser().parse(request);
         return element.getAsJsonObject();
     }
-
 }
