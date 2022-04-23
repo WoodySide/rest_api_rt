@@ -11,6 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Builder
 @Entity(name = "Countries")
 @Table(name = "country_data",
        indexes = @Index(name = "full_name_index", columnList = "FULL_NAME_TO_LOWER", unique = true))

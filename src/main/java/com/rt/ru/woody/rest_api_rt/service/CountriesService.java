@@ -1,11 +1,9 @@
 package com.rt.ru.woody.rest_api_rt.service;
 
-import com.rt.ru.woody.rest_api_rt.exception_handling.NoAuthFoundException;
 import com.rt.ru.woody.rest_api_rt.model.AppConst;
 import com.rt.ru.woody.rest_api_rt.model.Countries;
 import com.rt.ru.woody.rest_api_rt.repository.CountryRepository;
 import com.rt.ru.woody.rest_api_rt.response.CountryResponse;
-import com.rt.ru.woody.rest_api_rt.validation.ValidationAuthInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class CountriesService implements ValidationAuthInterface {
+public class CountriesService {
 
     private final CountryRepository countryRepository;
 
@@ -51,13 +49,8 @@ public class CountriesService implements ValidationAuthInterface {
                         .sorted(Comparator.comparing(Countries::getShortName))
                 .collect(Collectors.toList());
 
-        countryRepository.saveAll(finalCountriesNames);
-    }
+        log.info("Saving countries data to DB");
 
-    @Override
-    public void checkHeader(String checkHeader, String header) {
-        if (!checkHeader.equalsIgnoreCase(header)) {
-            throw new NoAuthFoundException("The entrance is forbidden. No rights to see the data.");
-        }
+        countryRepository.saveAll(finalCountriesNames);
     }
 }
