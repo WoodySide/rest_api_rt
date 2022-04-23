@@ -7,34 +7,27 @@ import com.rt.ru.woody.rest_api_rt.payload.ApiResponse;
 import com.rt.ru.woody.rest_api_rt.service.CachedServiceCountries;
 import com.rt.ru.woody.rest_api_rt.service.CountriesService;
 import com.rt.ru.woody.rest_api_rt.validation.annotation.Authorized;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.*;
 
 @RestController
 @RequestMapping(value = "/api/v1")
-@Getter
 public class RestAppController {
 
     private final CountriesService countriesService;
 
-    private final HttpServletRequest request;
-
     private final CachedServiceCountries cachedCountries;
 
     @Autowired
-    public RestAppController(CountriesService countriesService, HttpServletRequest request, CachedServiceCountries cachedCountries) {
+    public RestAppController(CountriesService countriesService, CachedServiceCountries cachedCountries) {
         this.countriesService = countriesService;
-        this.request = request;
         this.cachedCountries = cachedCountries;
     }
 
