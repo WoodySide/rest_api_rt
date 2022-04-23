@@ -4,13 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.FORBIDDEN)
-public class NoAuthFoundException extends RuntimeException{
+public class NoAuthFoundException extends AppAbstractException{
 
-    public NoAuthFoundException(String message) {
-        super(message);
-    }
+    private static final String ERROR_MESSAGE = "The entrance is forbidden. No rights to see the data.";
 
-    public NoAuthFoundException(String message, Throwable cause) {
-        super(message, cause);
+    public NoAuthFoundException() {
+        super(ERROR_MESSAGE);
     }
 }

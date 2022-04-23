@@ -4,13 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class NotAProperLinkException extends RuntimeException{
+public class NotAProperLinkException extends AppAbstractException{
 
-    public NotAProperLinkException(String message) {
-        super(message);
-    }
+    private static final String ERROR_MESSAGE = "Link doesn't seem correct!";
 
-    public NotAProperLinkException(String message, Throwable cause) {
-        super(message, cause);
+    public NotAProperLinkException() {
+        super(ERROR_MESSAGE);
     }
 }
