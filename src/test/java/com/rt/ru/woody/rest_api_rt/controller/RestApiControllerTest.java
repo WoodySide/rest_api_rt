@@ -1,16 +1,18 @@
 package com.rt.ru.woody.rest_api_rt.controller;
 
 
+import com.rt.ru.woody.rest_api_rt.TraceUnitTestRule;
 import com.rt.ru.woody.rest_api_rt.model.AppConst;
 import com.rt.ru.woody.rest_api_rt.service.CountriesService;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.junit.Before;
-import org.junit.Test;
+
 import org.springframework.http.HttpHeaders;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -19,9 +21,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.io.IOException;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@ExtendWith(value = TraceUnitTestRule.class)
+@Profile(value = "test")
 public class RestApiControllerTest {
 
     private static final String CODE_URL = "http://localhost:9090/api/v1/code";
@@ -68,7 +71,7 @@ public class RestApiControllerTest {
         mockMvc
                 .perform(
                         get(CODE_URL + "/" + countryName))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isForbidden())
                 .andDo(print());
     }
 
@@ -103,7 +106,7 @@ public class RestApiControllerTest {
         mockMvc
                 .perform(
                         post(RELOAD_URL))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isForbidden())
                 .andDo(print());
     }
 
