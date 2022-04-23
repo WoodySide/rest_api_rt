@@ -6,6 +6,7 @@ import com.rt.ru.woody.rest_api_rt.model.Countries;
 import com.rt.ru.woody.rest_api_rt.payload.ApiResponse;
 import com.rt.ru.woody.rest_api_rt.service.CachedServiceCountries;
 import com.rt.ru.woody.rest_api_rt.service.CountriesService;
+import com.rt.ru.woody.rest_api_rt.validation.annotation.Authorized;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -43,9 +44,8 @@ public class RestAppController {
     }
 
     @PostMapping(path = "/reload", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse> reloadData(@RequestHeader(value = HttpHeaders.AUTHORIZATION) String authHeader) throws IOException {
-
-        countriesService.checkHeader(AppConst.SECURED_NUMBER_RELOAD, authHeader);
+    @Authorized(code = AppConst.SECURED_NUMBER_RELOAD)
+    public ResponseEntity<ApiResponse> reloadData() throws IOException {
 
         countriesService.saveDataToDB();
 
@@ -55,14 +55,12 @@ public class RestAppController {
     }
 
     @GetMapping(path = "/code/{countryName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse> getCountryByCode(@PathVariable(value = "countryName") String countryName,
-                                                        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authHeader) throws IOException {
-
-        countriesService.checkHeader(AppConst.SECURED_NUMBER_CODE, authHeader);
+    @Authorized(code = AppConst.SECURED_NUMBER_CODE)
+    public ResponseEntity<ApiResponse> getCountryByCode(@PathVariable(value = "countryName") String countryName) throws IOException {
 
         Optional<Countries> foundCountry =
                 Optional.ofNullable(cachedCountries.getByCountryName(countryName, countryName.toLowerCase(Locale.ROOT))
-                        .orElseThrow(() -> new NoCountryFoundException("There is no such country or this country has no code")));
+                        .orElseThrow(NoCountryFoundException::new));
 
         return ResponseEntity
                 .ok()
