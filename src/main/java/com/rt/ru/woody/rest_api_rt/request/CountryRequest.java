@@ -27,7 +27,7 @@ public class CountryRequest {
                     .returnContent();
 
         } catch (IOException e) {
-            throw new NotAProperLinkException("Link doesn't seem correct!");
+            throw new NotAProperLinkException();
         }
 
         return countriesContent.asString();
